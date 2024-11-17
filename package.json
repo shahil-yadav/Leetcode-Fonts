@@ -1,0 +1,11 @@
+{
+  "name": "leetcode-editor-plugin",
+  "workspaces": [
+    "popup",
+    "content-scripts",
+    "service-worker"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces"
+  }
+}
