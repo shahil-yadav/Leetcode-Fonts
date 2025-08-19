@@ -1,6 +1,10 @@
 ## Supports [leetcode.cn](https://leetcode.cn) and [leetcode.com](https://leetcode.com)
 
 <p align="center">
+  <img alt="Chrome Web Store Users" src="https://img.shields.io/chrome-web-store/users/hinfimgacobnellbncbcpdlpaapcofaa?style=social&logo=chromewebstore">
+</p>
+
+<p align="center">
   <img width="250px" alt="Leetfonts" src="https://github.com/user-attachments/assets/a7c0fa0c-a93a-46ac-bc30-53597e0a11e0" />
 </p>
 
