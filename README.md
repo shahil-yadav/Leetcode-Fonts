@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <img width="250px" alt="Leetfonts" src="https://github.com/user-attachments/assets/a7c0fa0c-a93a-46ac-bc30-53597e0a11e0" />
+  <img width="45%" alt="Leetfonts" src="https://github.com/user-attachments/assets/a7c0fa0c-a93a-46ac-bc30-53597e0a11e0" />
 </p>
 
 List of available fonts in the plugin that are loaded through the [Google Font API](https://developers.google.com/fonts/docs/getting_started?csw=1)
