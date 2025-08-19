@@ -60,6 +60,7 @@ export function Inject() {
       <Button disabled={isSuccess} onClick={handleInject} className="ml-2">
         {isSuccess ? "Injected" : "Inject"}
       </Button>
+      <Reset />
       {isSuccess && (
         <p className="my-1 text-green-800">Changes are applied to your editor successfully</p>
       )}
@@ -83,5 +84,44 @@ export function Inject() {
         </button>
       </footer>
     </div>
+  )
+}
+
+function Reset() {
+  const [isDisabled, setIsDisabled] = useState(true)
+  const [showText, setShowText] = useState(false)
+
+  async function handleClick() {
+    await localInjectedFontStorage.setValue(null)
+    setIsDisabled(true)
+    setShowText(true)
+  }
+
+  useEffect(() => {
+    async function main() {
+      const isFontPresent = !!(await localInjectedFontStorage.getValue())
+      if (isFontPresent) setIsDisabled(false)
+    }
+
+    localInjectedFontStorage.watch((val) => {
+      if (!!val) {
+        setIsDisabled(false)
+      }
+    })
+
+    main()
+  }, [])
+
+  return (
+    <>
+      {showText && (
+        <p className="text-green-800">Please reload your webpage to see the default font</p>
+      )}
+      {!isDisabled && (
+        <Button className="ml-2" variant="outline" onClick={handleClick}>
+          Reset
+        </Button>
+      )}
+    </>
   )
 }
