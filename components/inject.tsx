@@ -1,11 +1,15 @@
 import SyntaxHighlighter from "react-syntax-highlighter"
 import { androidstudio } from "react-syntax-highlighter/dist/esm/styles/hljs"
 import { Button } from "@/components/ui/button"
+import { NavLink } from "react-router"
+import { Reset } from "./reset"
+import LeetcodeLogo from "@/assets/leetcode.svg"
 
 export function Inject() {
   const code = useGetCodeFromEditor()
   const [font, setFont] = useState(fonts[0])
   const [isSuccess, setIsSuccess] = useState(false)
+  const [isError, setIsError] = useState(false)
 
   useEffect(() => {
     if (!isSuccess) return
@@ -25,37 +29,59 @@ export function Inject() {
       function func(fontFamily: string) {
         // @ts-ignore
         window?.monaco?.editor?.getEditors()[0]?.updateOptions({ fontFamily })
+        return !!window?.monaco
       }
 
-      await browser.scripting.executeScript({
+      const bools = await browser.scripting.executeScript({
         world: "MAIN",
         func,
         args: [font],
         target: { tabId: tab.id! }
       })
+
+      for (const { result } of bools) {
+        if (!result) {
+          setIsError(true)
+          break
+        }
+      }
     }
 
     await localInjectedFontStorage.setValue(font)
     setIsSuccess(true)
   }
 
+  if (isError) {
+    return (
+      <div className="p-5 space-y-4">
+        <p className="text-right">
+          <code>{"<Error />"}</code>
+        </p>
+        <div className="flex gap-3 items-center">
+          <img className="size-10" src={LeetcodeLogo} />
+          <p>
+            LeetCode may have resolved the memory leak issue that this extension relied on to
+            function
+          </p>
+        </div>
+
+        <Button onClick={() => setIsError(false)}>Try again</Button>
+      </div>
+    )
+  }
+
   return (
     <div>
-      {/* TODO Make an < About.tsx />  */}
-      <p className="mb-3">
-        I was inspired by this{" "}
-        <button
-          onClick={() => browser.tabs.create({ url: "https://hail2u.github.io/mn/" })}
-          className="text-blue-500"
-        >
-          blog
-        </button>
-        , for the following fonts availaible in this plugin
-      </p>
-      {/* <p>
-        You can use any other fonts availaible from the Google Fonts website too if you want more
-        customisability
-      </p> */}
+      <div className="flex justify-between mb-5">
+        <Link
+          label="Leetfonts"
+          url="https://chromewebstore.google.com/detail/leetcode-fonts/hinfimgacobnellbncbcpdlpaapcofaa"
+          className="text-lg font-semibold text-foreground no-underline hover:underline hover:text-foreground/70"
+        />
+
+        <NavLink to="/about">About</NavLink>
+      </div>
+
       <FontSelector value={font} setValue={setFont} />
       <Button disabled={isSuccess} onClick={handleInject} className="ml-2">
         {isSuccess ? "Injected" : "Inject"}
@@ -69,6 +95,7 @@ export function Inject() {
           customStyle={{ height: 444 }}
           codeTagProps={{ style: { fontFamily: font } }}
           style={androidstudio}
+          language="cpp"
         >
           {code}
         </SyntaxHighlighter>
@@ -84,44 +111,5 @@ export function Inject() {
         </button>
       </footer>
     </div>
-  )
-}
-
-function Reset() {
-  const [isDisabled, setIsDisabled] = useState(true)
-  const [showText, setShowText] = useState(false)
-
-  async function handleClick() {
-    await localInjectedFontStorage.setValue(null)
-    setIsDisabled(true)
-    setShowText(true)
-  }
-
-  useEffect(() => {
-    async function main() {
-      const isFontPresent = !!(await localInjectedFontStorage.getValue())
-      if (isFontPresent) setIsDisabled(false)
-    }
-
-    localInjectedFontStorage.watch((val) => {
-      if (!!val) {
-        setIsDisabled(false)
-      }
-    })
-
-    main()
-  }, [])
-
-  return (
-    <>
-      {showText && (
-        <p className="text-green-800">Please reload your webpage to see the default font</p>
-      )}
-      {!isDisabled && (
-        <Button className="ml-2" variant="outline" onClick={handleClick}>
-          Reset
-        </Button>
-      )}
-    </>
   )
 }

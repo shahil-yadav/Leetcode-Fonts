@@ -25,7 +25,7 @@ jobs:
 
       - name: Submit to stores
         run: |
-          pnpm wxt submit --dry-run \
+          pnpm wxt submit \
             --chrome-zip .output/*-chrome.zip \
 
         env:

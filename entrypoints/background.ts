@@ -36,14 +36,7 @@ export default defineBackground({
             })
           }
 
-          console.log("Waiting for #editor to appear in DOM")
           await waitForElement(".monaco-editor")
-          const isEditorPresent = !!document.querySelector(".monaco-editor")
-          console.log(
-            `document.querySelector(".monaco-editor"):${isEditorPresent}`,
-            document.querySelector(".monaco-editor")
-          )
-          console.log("Trying to inject:", fontFamily)
 
           if (!Object.keys(window).find((val) => val === "monaco")) {
             throw new Error("Not able to find editor after 2.5sec")
