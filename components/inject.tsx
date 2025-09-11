@@ -11,17 +11,19 @@ export function Inject() {
   const [isSuccess, setIsSuccess] = useState(false)
   const [isError, setIsError] = useState(false)
 
-  useEffect(() => {
-    if (!isSuccess) return
+  /**  I think i am interfering with UX */
 
-    const timer = setInterval(() => {
-      setIsSuccess(false)
-    }, 1000)
+  // useEffect(() => {
+  //   if (!isSuccess) return
 
-    return () => {
-      clearInterval(timer)
-    }
-  }, [isSuccess])
+  //   const timer = setInterval(() => {
+  //     setIsSuccess(false)
+  //   }, 1000)
+
+  //   return () => {
+  //     clearInterval(timer)
+  //   }
+  // }, [isSuccess])
 
   async function handleInject() {
     const tabs = await getLeetcodeTabs()
@@ -72,23 +74,26 @@ export function Inject() {
 
   return (
     <div>
-      <div className="flex justify-between mb-5">
-        <Link
+      <div className="flex justify-end mb-5">
+        {/* <Link
           label="Leetfonts"
           url="https://chromewebstore.google.com/detail/leetcode-fonts/hinfimgacobnellbncbcpdlpaapcofaa"
           className="text-lg font-semibold text-foreground no-underline hover:underline hover:text-foreground/70"
-        />
+        /> */}
 
-        <NavLink to="/about">About</NavLink>
+        <NavLink to="/about">/about</NavLink>
       </div>
 
-      <FontSelector value={font} setValue={setFont} />
+      <FontSelector setIsSuccess={setIsSuccess} value={font} setValue={setFont} />
       <Button disabled={isSuccess} onClick={handleInject} className="ml-2">
         {isSuccess ? "Injected" : "Inject"}
       </Button>
       <Reset />
       {isSuccess && (
-        <p className="my-1 text-green-800">Changes are applied to your editor successfully</p>
+        <div className="text-green-800 mt-1">
+          <p className="font-bold">Reload the leetcode if you don't see the changes rightaway</p>
+          <p className="">Changes are applied to your editor successfully</p>
+        </div>
       )}
       <div className="my-4">
         <SyntaxHighlighter
