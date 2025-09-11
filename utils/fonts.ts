@@ -19,3 +19,8 @@ export const fonts = [
   "Azeret Mono", // A newer font, gaining traction
   "Courier Prime" // Traditional choice, though slightly less popular in modern design
 ]
+
+/** Apple Experimental Fonts */
+export const experiments = [
+  "Monaco"
+]
