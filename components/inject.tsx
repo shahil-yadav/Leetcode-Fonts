@@ -74,14 +74,14 @@ export function Inject() {
 
   return (
     <div>
-      <div className="flex justify-between mb-5">
-        <Link
+      <div className="flex justify-end mb-5">
+        {/* <Link
           label="Leetfonts"
           url="https://chromewebstore.google.com/detail/leetcode-fonts/hinfimgacobnellbncbcpdlpaapcofaa"
           className="text-lg font-semibold text-foreground no-underline hover:underline hover:text-foreground/70"
-        />
+        /> */}
 
-        <NavLink to="/about">About</NavLink>
+        <NavLink to="/about">/about</NavLink>
       </div>
 
       <FontSelector setIsSuccess={setIsSuccess} value={font} setValue={setFont} />
