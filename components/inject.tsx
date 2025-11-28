@@ -1,15 +1,16 @@
-import SyntaxHighlighter from "react-syntax-highlighter"
-import { androidstudio } from "react-syntax-highlighter/dist/esm/styles/hljs"
-import { Button } from "@/components/ui/button"
-import { NavLink } from "react-router"
-import { Reset } from "./reset"
-import LeetcodeLogo from "@/assets/leetcode.svg"
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { androidstudio } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { Button } from "@/components/ui/button";
+import { NavLink } from "react-router";
+import { Reset } from "./reset";
+import LeetcodeLogo from "@/assets/leetcode.svg";
+import { FontLigaturesSwitch } from "./font-ligatures";
 
 export function Inject() {
-  const code = useGetCodeFromEditor()
-  const [font, setFont] = useState(fonts[0])
-  const [isSuccess, setIsSuccess] = useState(false)
-  const [isError, setIsError] = useState(false)
+  const code = useGetCodeFromEditor();
+  const [font, setFont] = useState(fonts[0]);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   /**  I think i am interfering with UX */
 
@@ -26,31 +27,31 @@ export function Inject() {
   // }, [isSuccess])
 
   async function handleInject() {
-    const tabs = await getLeetcodeTabs()
+    const tabs = await getLeetcodeTabs();
     for (const tab of tabs) {
       function func(fontFamily: string) {
         // @ts-ignore
-        window?.monaco?.editor?.getEditors()[0]?.updateOptions({ fontFamily })
-        return !!window?.monaco
+        window?.monaco?.editor?.getEditors()[0]?.updateOptions({ fontFamily });
+        return !!window?.monaco;
       }
 
       const bools = await browser.scripting.executeScript({
         world: "MAIN",
         func,
         args: [font],
-        target: { tabId: tab.id! }
-      })
+        target: { tabId: tab.id! },
+      });
 
       for (const { result } of bools) {
         if (!result) {
-          setIsError(true)
-          break
+          setIsError(true);
+          break;
         }
       }
     }
 
-    await localInjectedFontStorage.setValue(font)
-    setIsSuccess(true)
+    await localInjectedFontStorage.setValue(font);
+    setIsSuccess(true);
   }
 
   if (isError) {
@@ -62,19 +63,19 @@ export function Inject() {
         <div className="flex gap-3 items-center">
           <img className="size-10" src={LeetcodeLogo} />
           <p>
-            LeetCode may have resolved the memory leak issue that this extension relied on to
-            function
+            LeetCode may have resolved the memory leak issue that this extension
+            relied on to function
           </p>
         </div>
 
         <Button onClick={() => setIsError(false)}>Try again</Button>
       </div>
-    )
+    );
   }
 
   return (
-    <div>
-      <div className="flex justify-end mb-5">
+    <div className="space-y-2">
+      <div className="flex justify-end mb-2">
         {/* <Link
           label="Leetfonts"
           url="https://chromewebstore.google.com/detail/leetcode-fonts/hinfimgacobnellbncbcpdlpaapcofaa"
@@ -84,18 +85,25 @@ export function Inject() {
         <NavLink to="/about">/about</NavLink>
       </div>
 
-      <FontSelector setIsSuccess={setIsSuccess} value={font} setValue={setFont} />
+      <FontSelector
+        setIsSuccess={setIsSuccess}
+        value={font}
+        setValue={setFont}
+      />
+      <FontLigaturesSwitch />
       <Button disabled={isSuccess} onClick={handleInject} className="ml-2">
         {isSuccess ? "Injected" : "Inject"}
       </Button>
       <Reset />
       {isSuccess && (
         <div className="text-green-800 mt-1">
-          <p className="font-bold">Reload the leetcode if you don't see the changes rightaway</p>
+          <p className="font-bold">
+            Reload the leetcode if you don't see the changes rightaway
+          </p>
           <p className="">Changes are applied to your editor successfully</p>
         </div>
       )}
-      <div className="my-4">
+      <div className="my-2">
         <SyntaxHighlighter
           customStyle={{ height: 444 }}
           codeTagProps={{ style: { fontFamily: font } }}
@@ -106,15 +114,7 @@ export function Inject() {
         </SyntaxHighlighter>
       </div>
 
-      <footer>
-        Made with ❤️ by
-        <button
-          className="hover:underline ml-1 font-bold"
-          onClick={() => browser.tabs.create({ url: "https://www.linkedin.com/in/shahilyadav" })}
-        >
-          Shahil Yadav
-        </button>
-      </footer>
+      <footer className="ml-1 font-bold">Made by Shahil</footer>
     </div>
-  )
+  );
 }

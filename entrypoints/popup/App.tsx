@@ -1,6 +1,6 @@
-import { About } from "@/components/about"
-import { Inject } from "@/components/inject"
-import { Route, Routes } from "react-router"
+import { About } from "@/components/about";
+import { Inject } from "@/components/inject";
+import { Route, Routes } from "react-router";
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
         <Route path="about" element={<About />} />
       </Routes>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

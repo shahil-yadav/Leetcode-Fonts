@@ -1,20 +1,23 @@
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 export function Link({
   url,
   label,
-  className
+  className,
 }: {
-  url: string
-  label: string
-  className?: string
+  url: string;
+  label: string;
+  className?: string;
 }) {
   return (
     <span
       onClick={() => browser.tabs.create({ url })}
-      className={cn("text-blue-500 cursor-pointer ml-1 underline hover:text-blue-700", className)}
+      className={cn(
+        "text-blue-500 cursor-pointer ml-1 underline hover:text-blue-700",
+        className,
+      )}
     >
       {label}
     </span>
-  )
+  );
 }
