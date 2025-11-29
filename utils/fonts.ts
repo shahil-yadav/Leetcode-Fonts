@@ -17,10 +17,8 @@ export const fonts = [
   "Share Tech Mono", // Used in various tech-centric designs
   "Nanum Gothic Coding", // Popular in Korean web and app development
   "Azeret Mono", // A newer font, gaining traction
-  "Courier Prime" // Traditional choice, though slightly less popular in modern design
-]
+  "Courier Prime", // Traditional choice, though slightly less popular in modern design
+];
 
 /** Apple Experimental Fonts */
-export const experiments = [
-  "Monaco"
-]
+export const experiments = ["Monaco"];

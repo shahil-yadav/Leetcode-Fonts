@@ -1,38 +1,42 @@
-import { Check, ChevronsUpDown } from "lucide-react"
+import { Check, ChevronsUpDown } from "lucide-react";
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-  CommandList
-} from "@/components/ui/command"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import WebFont from "webfontloader"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import AppleLogo from "@/assets/apple.png"
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import WebFont from "webfontloader";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import AppleLogo from "@/assets/apple.png";
 
 export function FontSelector({
   setValue,
   setIsSuccess,
-  value
+  value,
 }: {
-  setValue: React.Dispatch<React.SetStateAction<string>>
-  setIsSuccess: React.Dispatch<React.SetStateAction<boolean>>
-  value: string
+  setValue: React.Dispatch<React.SetStateAction<string>>;
+  setIsSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+  value: string;
 }) {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    WebFont.load({ google: { families: fonts } })
-  }, [])
+    WebFont.load({ google: { families: fonts } });
+  }, []);
 
   useEffect(() => {
     if (open) {
-      setIsSuccess(false)
+      setIsSuccess(false);
     }
-  }, [open])
+  }, [open]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -55,22 +59,28 @@ export function FontSelector({
               <p>Please choose from the default ones as now.</p>
             </CommandEmpty>
             <CommandGroup heading="Experimental">
-              {experiments.map((font) =>
+              {experiments.map((font) => (
                 <CommandItem
                   key={font}
                   value={font}
                   style={{ fontFamily: font }}
                   onSelect={(currentValue) => {
-                    setValue(currentValue)
-                    setOpen(false)
-                  }}>
+                    setValue(currentValue);
+                    setOpen(false);
+                  }}
+                >
                   <div className="flex items-center w-full justify-between">
                     <span>{font}</span>
                     <img src={AppleLogo} className="size-3" />
                   </div>
-                  <Check className={cn("ml-auto", value === font ? "opacity-100" : "opacity-0")} />
+                  <Check
+                    className={cn(
+                      "ml-auto",
+                      value === font ? "opacity-100" : "opacity-0",
+                    )}
+                  />
                 </CommandItem>
-              )}
+              ))}
             </CommandGroup>
             <CommandGroup heading="Universal">
               {fonts.map((font) => (
@@ -79,12 +89,17 @@ export function FontSelector({
                   value={font}
                   style={{ fontFamily: font }}
                   onSelect={(currentValue) => {
-                    setValue(currentValue)
-                    setOpen(false)
+                    setValue(currentValue);
+                    setOpen(false);
                   }}
                 >
                   {font}
-                  <Check className={cn("ml-auto", value === font ? "opacity-100" : "opacity-0")} />
+                  <Check
+                    className={cn(
+                      "ml-auto",
+                      value === font ? "opacity-100" : "opacity-0",
+                    )}
+                  />
                 </CommandItem>
               ))}
             </CommandGroup>
@@ -92,5 +107,5 @@ export function FontSelector({
         </Command>
       </PopoverContent>
     </Popover>
-  )
+  );
 }
