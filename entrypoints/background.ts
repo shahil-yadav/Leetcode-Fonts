@@ -3,58 +3,21 @@ import { onMessage } from "webext-bridge/background";
 export default defineBackground({
   type: "module",
   async main() {
-    onMessage("injectFontIfAny", async ({ data }) => {
-      const url = data.url;
+    onMessage("injectFontIfAny", async () => {
       const font = await localInjectedFontStorage.getValue();
       const fontLigatures = await localIsFontLigaturesEnabledStorage.getValue();
 
       if (font !== null) {
-        const tabs = await browser.tabs.query({ url });
+        const tabs = await getLeetcodeTabs();
 
-        async function func(fontFamily: string, fontLigatures: boolean) {
-          // waitForElement.js
-          /**
-           * Installs a mutation observer over the DOM tree
-           * @param {string} selector
-           */
-          function waitForElement(selector: string) {
-            return new Promise((resolve) => {
-              if (document.querySelector(selector)) {
-                return resolve(document.querySelector(selector));
-              }
-
-              const observer = new MutationObserver(() => {
-                if (document.querySelector(selector)) {
-                  resolve(document.querySelector(selector));
-                  observer.disconnect();
-                }
-              });
-
-              observer.observe(document.body, {
-                childList: true,
-                subtree: true,
-              });
-            });
-          }
-
-          await waitForElement(".monaco-editor");
-
-          if (!Object.keys(window).find((val) => val === "monaco")) {
-            throw new Error("Not able to find editor after 2.5sec");
-          }
-
-          // @ts-ignore
-          window?.monaco?.editor
-            ?.getEditors()[0]
-            ?.updateOptions({ fontFamily, fontLigatures });
+        for (const tab of tabs) {
+          await browser.scripting.executeScript({
+            world: "MAIN",
+            func: injectScript,
+            args: [font, fontLigatures],
+            target: { tabId: tab.id! },
+          });
         }
-
-        await browser.scripting.executeScript({
-          world: "MAIN",
-          func,
-          args: [font, fontLigatures],
-          target: { tabId: tabs[0].id! },
-        });
       }
     });
   },

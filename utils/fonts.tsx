@@ -1,3 +1,7 @@
+import { SelectItem, SelectLabel } from "@/components/ui/select";
+import AppleLogo from "@/assets/apple.svg";
+import { SelectGroup } from "@radix-ui/react-select";
+
 export const fonts = [
   "Fira Code", // Very popular in coding communities for its ligatures
   "JetBrains Mono", // Popular among developers, especially in IDEs like JetBrains
@@ -22,3 +26,33 @@ export const fonts = [
 
 /** Apple Experimental Fonts */
 export const experiments = ["Monaco"];
+
+// helper fn
+export function renderFonts() {
+  const renderItem = (font: string) => (
+    <SelectItem key={font} value={font}>
+      {font}
+    </SelectItem>
+  );
+
+  const items = fonts.map(renderItem);
+  const experimentalItems = experiments.map(renderItem);
+
+  return (
+    <>
+      <SelectGroup>
+        <SelectLabel className="text-stone-400">
+          <div className="flex gap-1 items-center">
+            <span>Apple</span>
+            <img src={AppleLogo} className="size-3" />
+          </div>
+        </SelectLabel>
+        {experimentalItems}
+      </SelectGroup>
+      <SelectGroup>
+        <SelectLabel>Default</SelectLabel>
+        {items}
+      </SelectGroup>
+    </>
+  );
+}

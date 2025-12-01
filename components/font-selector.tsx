@@ -17,6 +17,8 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import AppleLogo from "@/assets/apple.png";
 
+// TODO: Delete this after done with cleaning
+/** @deprecated using <Select /> instead of <Popover /> to comply with form */
 export function FontSelector({
   setValue,
   setIsSuccess,
@@ -76,7 +78,7 @@ export function FontSelector({
                   <Check
                     className={cn(
                       "ml-auto",
-                      value === font ? "opacity-100" : "opacity-0",
+                      value === font ? "opacity-100" : "opacity-0"
                     )}
                   />
                 </CommandItem>
@@ -97,7 +99,7 @@ export function FontSelector({
                   <Check
                     className={cn(
                       "ml-auto",
-                      value === font ? "opacity-100" : "opacity-0",
+                      value === font ? "opacity-100" : "opacity-0"
                     )}
                   />
                 </CommandItem>

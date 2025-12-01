@@ -1,6 +1,6 @@
-// TODO: Improve this hook
+/** @deprecated */
 export function useGetCodeFromEditor() {
-  const [value, setValue] = useState(() => getCodeFromEditor());
+  const [value, setValue] = useState(() => getDefaultCodeFromEditor());
 
   useEffect(() => {
     async function main() {
@@ -22,6 +22,55 @@ export function useGetCodeFromEditor() {
         }
       }
     }
+    main();
+  }, []);
+
+  return value;
+}
+
+interface ITabCode {
+  url: string;
+  code: string;
+}
+
+// TODO: Improve this hook
+export function useGetUserCodeFromLeetcodeTabs() {
+  const [value, setValue] = useState<ITabCode[]>([
+    {
+      url: "default",
+      code: getDefaultCodeFromEditor(),
+    },
+  ]);
+
+  useEffect(() => {
+    async function main() {
+      const tabs = await getLeetcodeTabs();
+
+      const data: ITabCode[] = [];
+      for (const tab of tabs) {
+        function inject() {
+          // @ts-ignore
+          return window?.monaco?.editor?.getEditors()[0]?.getValue();
+        }
+
+        const value = await browser.scripting.executeScript({
+          world: "MAIN",
+          func: inject,
+          target: { tabId: tab.id! },
+        });
+
+        const code: string = value[0].result;
+
+        if (tab.url && code)
+          data.push({
+            url: tab.url,
+            code,
+          });
+      }
+
+      // setValue(data);
+    }
+
     main();
   }, []);
 

@@ -19,7 +19,7 @@ export default defineConfig({
   webExt: {
     startUrls: [
       "https://leetcode.com/problems/longest-substring-without-repeating-characters/description/",
-      "https://leetcode.cn/problems/longest-substring-without-repeating-characters/description/",
+      // "https://leetcode.cn/problems/longest-substring-without-repeating-characters/description/",
     ],
   },
 });
