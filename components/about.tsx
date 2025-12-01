@@ -1,7 +1,8 @@
-import { ChevronLeft } from "lucide-react";
-import { NavLink } from "react-router";
-import { Button } from "./ui/button";
-import { Link } from "./link";
+import { ChevronLeft } from 'lucide-react'
+import { NavLink } from 'react-router'
+
+import { Link } from './link'
+import { Button } from './ui/button'
 
 export function About() {
   return (
@@ -26,25 +27,28 @@ export function About() {
       <p>
         I was inspired by the fonts presented in this list
         <Link
-          url="https://hail2u.github.io/mn"
           label="https://hail2u.github.io/mn"
-        />{" "}
+          url="https://hail2u.github.io/mn"
+        />
+        {' '}
         to set them as default ones
       </p>
 
       <p>
-        <code>{"<TODO/> : "}</code>
-        If I get some free time, I was thinking of adding support for the{" "}
+        <code>{'<TODO/> : '}</code>
+        If I get some free time, I was thinking of adding support for the
+        {' '}
         <Link
           className="ml-0"
-          url="https://fonts.google.com"
           label="Google Fonts API"
-        />{" "}
+          url="https://fonts.google.com"
+        />
+        {' '}
         to dynamically load any font from their site. That way, you
         wouldn&apos;t be limited to just the default options. But to be honest,
         it feels like a bit of overengineering — the default fonts already get
         the job done well enough.
       </p>
     </div>
-  );
+  )
 }

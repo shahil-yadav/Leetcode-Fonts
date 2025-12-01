@@ -1,20 +1,10 @@
-## Supports [leetcode.cn](https://leetcode.cn) and [leetcode.com](https://leetcode.com)
+import { SelectGroup } from '@radix-ui/react-select'
 
-<p align="center">
-  <img alt="Chrome Web Store Users" src="https://img.shields.io/chrome-web-store/users/hinfimgacobnellbncbcpdlpaapcofaa?style=social&logo=chromewebstore">
-</p>
-<p align="center">
-  <img width="45%" alt="Leetfonts" src="https://github.com/user-attachments/assets/a7c0fa0c-a93a-46ac-bc30-53597e0a11e0" />
-</p>
+import AppleLogo from '@/assets/apple.svg'
+import LinuxLogo from '@/assets/linux.svg'
+import WindowsLogo from '@/assets/windows.svg'
+import { SelectItem, SelectLabel } from '@/components/ui/select'
 
-## Showcase
-
-<img alt="cn" src="https://github.com/user-attachments/assets/110438cf-4564-404b-a512-5fc6c1c8d44a" />
-<img alt="com" src="https://github.com/user-attachments/assets/e1ea2063-8e8f-4544-8efb-7e04d46fb370" />
-
-List of available fonts in the plugin that are loaded through the [Google Font API](https://developers.google.com/fonts/docs/getting_started?csw=1)
-
-```js
 export const fonts = [
   'Fira Code', // Very popular in coding communities for its ligatures
   'JetBrains Mono', // Popular among developers, especially in IDEs like JetBrains
@@ -36,8 +26,43 @@ export const fonts = [
   'Azeret Mono', // A newer font, gaining traction
   'Courier Prime', // Traditional choice, though slightly less popular in modern design
 ]
-```
 
-## Tip for me while debugging popup in my extension
+/** Apple Experimental Fonts */
+export const experiments = ['Monaco', 'SF Mono']
 
-use `location.reload(true)` to always hit my debugging endpoints
+// helper fn
+export function renderFonts() {
+  const renderItem = (font: string) => (
+    <SelectItem key={font} style={{ fontFamily: font }} value={font}>
+      {font}
+    </SelectItem>
+  )
+
+  const items = fonts.map(renderItem)
+  const experimentalItems = experiments.map(renderItem)
+
+  return (
+    <>
+      <SelectGroup>
+        <SelectLabel className="text-stone-400">
+          <div className="flex gap-1 items-center">
+            <span>Apple</span>
+            <img className="size-3" src={AppleLogo} />
+          </div>
+        </SelectLabel>
+        {experimentalItems}
+      </SelectGroup>
+      <SelectGroup>
+        <SelectLabel>
+          <div className="flex items-center gap-3">
+            Universal
+            <img className="size-3" src={WindowsLogo} />
+            <img className="size-3" src={AppleLogo} />
+            <img className="size-3" src={LinuxLogo} />
+          </div>
+        </SelectLabel>
+        {items}
+      </SelectGroup>
+    </>
+  )
+}

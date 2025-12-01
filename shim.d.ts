@@ -1,7 +1,8 @@
-import "webext-bridge";
+import 'webext-bridge'
 
-declare module "webext-bridge" {
+declare module 'webext-bridge' {
   export interface ProtocolMap {
-    injectFontIfAny: { url: string };
+    injectFontIfAny: unknown
+    reset: unknown
   }
 }

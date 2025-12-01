@@ -1,122 +1,114 @@
-import SyntaxHighlighter from "react-syntax-highlighter";
-import { androidstudio } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import { Button } from "@/components/ui/button";
-import { NavLink } from "react-router";
-import { Reset } from "./reset";
-import LeetcodeLogo from "@/assets/leetcode.svg";
-import { FontLigaturesSwitch } from "./font-ligatures";
+import type { SubmitHandler } from 'react-hook-form'
+
+import { Controller, useForm } from 'react-hook-form'
+import { NavLink } from 'react-router'
+import { toast } from 'sonner'
+import { sendMessage } from 'webext-bridge/popup'
+import WebFont from 'webfontloader'
+
+import { Button } from '@/components/ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { renderFonts } from '@/utils/fonts'
+
+import { Label } from './ui/label'
+import { Switch } from './ui/switch'
+
+interface IFormInput {
+  fontFamily: null | string
+  fontLigatures: boolean
+}
+
+export function FontsLoader() {
+  useEffect(() => WebFont.load({ google: { families: fonts } }), [])
+  return <></>
+}
 
 export function Inject() {
-  const code = useGetCodeFromEditor();
-  // FIXME: See these two states, need to refractor everything connected to font variable
-  // const fontStrg = useStorage<string>(localInjectedFontStorage.key);
-  const [font, setFont] = useState(fonts[0]);
-  //
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const fontFamilyStrg = useStorage<string>(localInjectedFontStorage.key)
+  const fontLigaturesStrg = useStorage<boolean>(
+    localIsFontLigaturesEnabledStorage.key,
+  )
 
-  /**  I think i am interfering with UX */
-  // useEffect(() => {
-  //   if (!isSuccess) return
+  const { control, handleSubmit } = useForm<IFormInput>({
+    values: {
+      fontFamily: fontFamilyStrg,
 
-  //   const timer = setInterval(() => {
-  //     setIsSuccess(false)
-  //   }, 1000)
+      // fontLigaturesStrg can't be null since the `{ fallback: false }` is provided while initialisation
+      // use null coalescing trick
+      fontLigatures: fontLigaturesStrg ?? false,
+    },
+  })
 
-  //   return () => {
-  //     clearInterval(timer)
-  //   }
-  // }, [isSuccess])
+  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+    // set the values from the form to the extension's local strg
+    localIsFontLigaturesEnabledStorage.setValue(data.fontLigatures)
+    localInjectedFontStorage.setValue(data.fontFamily)
 
-  async function handleInject() {
-    const tabs = await getLeetcodeTabs();
-    for (const tab of tabs) {
-      function func(fontFamily: string) {
-        // @ts-ignore
-        window?.monaco?.editor?.getEditors()[0]?.updateOptions({ fontFamily });
-        return !!window?.monaco;
-      }
+    // inject the code
+    // send the message to background, maybe this service-worker act as a event manager
+    // hehe! This works
+    sendMessage('injectFontIfAny', { }, 'background')
 
-      const bools = await browser.scripting.executeScript({
-        world: "MAIN",
-        func,
-        args: [font],
-        target: { tabId: tab.id! },
-      });
-
-      for (const { result } of bools) {
-        if (!result) {
-          setIsError(true);
-          break;
-        }
-      }
-    }
-
-    await localInjectedFontStorage.setValue(font);
-    setIsSuccess(true);
-  }
-
-  if (isError) {
-    return (
-      <div className="p-5 space-y-4">
-        <p className="text-right">
-          <code>{"<Error />"}</code>
-        </p>
-        <div className="flex gap-3 items-center">
-          <img className="size-10" src={LeetcodeLogo} />
-          <p>
-            LeetCode may have resolved the memory leak issue that this extension
-            relied on to function
-          </p>
-        </div>
-
-        <Button onClick={() => setIsError(false)}>Try again</Button>
-      </div>
-    );
+    // give feedback to user
+    toast.success(`applied changes to the editor`)
   }
 
   return (
-    <div className="space-y-2">
-      <div className="flex justify-end mb-2">
-        {/* <Link
-          label="Leetfonts"
-          url="https://chromewebstore.google.com/detail/leetcode-fonts/hinfimgacobnellbncbcpdlpaapcofaa"
-          className="text-lg font-semibold text-foreground no-underline hover:underline hover:text-foreground/70"
-        /> */}
-
-        <NavLink to="/about">/about</NavLink>
-      </div>
-
-      <FontSelector
-        setIsSuccess={setIsSuccess}
-        value={font}
-        setValue={setFont}
-      />
-      <FontLigaturesSwitch />
-      <Button disabled={isSuccess} onClick={handleInject} className="ml-2">
-        {isSuccess ? "Injected" : "Inject"}
-      </Button>
-      <Reset />
-      {isSuccess && (
-        <div className="text-green-800 mt-1">
-          <p className="font-bold">
-            Reload the leetcode if you don't see the changes rightaway
-          </p>
-          <p className="">Changes are applied to your editor successfully</p>
+    <div className="gap-2 flex flex-col justify-between h-85">
+      <div>
+        <div className="flex justify-end mb-2">
+          <NavLink className="hover:underline" to="/about">
+            <code>/about</code>
+          </NavLink>
         </div>
-      )}
-      <div className="my-2">
-        <SyntaxHighlighter
-          customStyle={{ height: 444 }}
-          codeTagProps={{ style: { fontFamily: font } }}
-          style={androidstudio}
-          language="cpp"
-        >
-          {code}
-        </SyntaxHighlighter>
+        {/* this is controlled by "react-hook-form" library */}
+        <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
+          <Controller
+            control={control}
+            name="fontFamily"
+            render={({ field }) => (
+              <div className="flex items-center gap-3">
+                <Label id="font-family">Please select any font</Label>
+                <Select
+                  name={field.name}
+                  onValueChange={field.onChange}
+                  // value = {null} overrides the placeholder text `Select a font family`
+                  value={field.value ?? undefined}
+                >
+                  <SelectTrigger className="w-54">
+                    <SelectValue placeholder="Choose one" />
+                  </SelectTrigger>
+                  <SelectContent>{renderFonts()}</SelectContent>
+                </Select>
+              </div>
+            )}
+          />
+          <Controller
+            control={control}
+            name="fontLigatures"
+            render={({ field }) => (
+              <div className="flex items-center gap-3">
+                <Label htmlFor="font-ligatures">Font Ligatures</Label>
+                <Switch
+                  checked={field.value}
+                  id="font-ligatures"
+                  name={field.name}
+                  onCheckedChange={field.onChange}
+                />
+              </div>
+            )}
+          />
+          <Button type="submit">Submit</Button>
+          <Reset />
+        </form>
       </div>
 
-      <footer className="ml-1 font-bold">Made by Shahil</footer>
+      <footer>Made by Shahil</footer>
     </div>
-  );
+  )
 }

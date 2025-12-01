@@ -1,4 +1,4 @@
-export function getCodeFromEditor() {
+export function getDefaultCodeFromEditor() {
   return `// Sample code for display
 class Solution {
     public boolean isMatch(String s, String p) {
@@ -22,5 +22,5 @@ class Solution {
         }
         return dp[m][n];
     }
-}`;
+}`
 }

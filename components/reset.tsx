@@ -1,55 +1,22 @@
-import { Button } from "./ui/button";
+import { toast } from 'sonner'
+import { sendMessage } from 'webext-bridge/popup'
+
+import { Button } from './ui/button'
 
 export function Reset() {
-  const [isDisabled, setIsDisabled] = useState(true);
-  const [showText, setShowText] = useState(false);
-
   async function handleClick() {
-    await localInjectedFontStorage.setValue(null);
-    setIsDisabled(true);
-    setShowText(true);
+    // reset the values in the storage
+    localInjectedFontStorage.setValue(null)
+    localIsFontLigaturesEnabledStorage.setValue(false)
+
+    // send reset event to background
+    sendMessage('reset', { }, `background`)
+    toast.info('reloading leetcode to undo changes')
   }
 
-  useEffect(() => {
-    async function main() {
-      const isFontPresent = !!(await localInjectedFontStorage.getValue());
-      if (isFontPresent) setIsDisabled(false);
-    }
-
-    localInjectedFontStorage.watch((val) => {
-      if (!!val) {
-        setIsDisabled(false);
-      }
-    });
-
-    main();
-  }, []);
-
-  useEffect(() => {
-    if (!showText) return;
-
-    const timer = setInterval(() => {
-      setShowText(false);
-    }, 3000);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, [showText]);
-
   return (
-    <>
-      {!isDisabled && (
-        <Button className="ml-2" variant="outline" onClick={handleClick}>
-          Reset
-        </Button>
-      )}
-
-      {showText && (
-        <p className="text-green-800">
-          Please reload your webpage to see the default font
-        </p>
-      )}
-    </>
-  );
+    <Button className="ml-2" onClick={handleClick} type="reset" variant="outline">
+      Reset
+    </Button>
+  )
 }
