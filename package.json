@@ -1,9 +1,10 @@
 {
   "name": "leetcode-fonts",
-  "description": "Change fonts in leetcode effortlessly",
-  "private": true,
-  "version": "2.4.0",
   "type": "module",
+  "version": "2.4.0",
+  "private": true,
+  "packageManager": "pnpm@10.23.0+sha512.21c4e5698002ade97e4efe8b8b4a89a8de3c85a37919f957e7a0f30f38fbc5bbdd05980ffe29179b2fb6e6e691242e098d945d1601772cad0fef5fb6411e2a4b",
+  "description": "Change fonts in leetcode effortlessly",
   "scripts": {
     "dev": "wxt",
     "dev:firefox": "wxt -b firefox",
@@ -13,7 +14,9 @@
     "zip:firefox": "wxt zip -b firefox",
     "compile": "tsc --noEmit",
     "postinstall": "wxt prepare",
-    "pretty": "prettier --write ."
+    "pretty": "prettier --write .",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@1natsu/wait-element": "^4.1.2",
@@ -45,6 +48,8 @@
     "webfontloader": "^1.6.28"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^6.2.0",
+    "@eslint-react/eslint-plugin": "^2.2.4",
     "@types/node": "^22.19.1",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
@@ -52,11 +57,14 @@
     "@types/webfontloader": "^1.6.38",
     "@wxt-dev/auto-icons": "^1.1.0",
     "@wxt-dev/module-react": "^1.1.5",
+    "eslint": "^9.38.0",
+    "eslint-plugin-perfectionist": "^4.15.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
     "monaco-editor": "^0.52.2",
     "prettier": "^3.7.1",
     "tw-animate-css": "^1.4.0",
     "typescript": "^5.9.3",
     "wxt": "^0.20.11"
-  },
-  "packageManager": "pnpm@10.23.0+sha512.21c4e5698002ade97e4efe8b8b4a89a8de3c85a37919f957e7a0f30f38fbc5bbdd05980ffe29179b2fb6e6e691242e098d945d1601772cad0fef5fb6411e2a4b"
+  }
 }

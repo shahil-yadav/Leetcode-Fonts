@@ -1,39 +1,34 @@
-import SyntaxHighlighter from "react-syntax-highlighter";
-import { sendMessage } from "webext-bridge/popup";
-import { androidstudio } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import { Button } from "@/components/ui/button";
-import { NavLink } from "react-router";
-import { toast } from "sonner";
-import { Reset } from "./reset";
-import LeetcodeLogo from "@/assets/leetcode.svg";
-import { FontLigaturesSwitch } from "./font-ligatures";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import type { SubmitHandler } from 'react-hook-form'
+
+import { Controller, useForm } from 'react-hook-form'
+import { NavLink } from 'react-router'
+import { toast } from 'sonner'
+import { sendMessage } from 'webext-bridge/popup'
+
+import { Button } from '@/components/ui/button'
 import {
   Select,
   SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { renderFonts } from "@/utils/fonts";
-import { Switch } from "./ui/switch";
-import { Label } from "./ui/label";
-import WebFont from "webfontloader";
+} from '@/components/ui/select'
+import { renderFonts } from '@/utils/fonts'
+
+import { Label } from './ui/label'
+import { Switch } from './ui/switch'
 
 interface IFormInput {
-  fontFamily: string | null;
-  fontLigatures: boolean;
+  fontFamily: null | string
+  fontLigatures: boolean
 }
 
 export function Inject() {
-  const fontFamilyStrg = useStorage<string>(localInjectedFontStorage.key);
+  const fontFamilyStrg = useStorage<string>(localInjectedFontStorage.key)
   const fontLigaturesStrg = useStorage<boolean>(
-    localIsFontLigaturesEnabledStorage.key
-  );
+    localIsFontLigaturesEnabledStorage.key,
+  )
 
-  const { control, handleSubmit, formState } = useForm<IFormInput>({
+  const { control, formState, handleSubmit } = useForm<IFormInput>({
     values: {
       fontFamily: fontFamilyStrg,
 
@@ -41,9 +36,9 @@ export function Inject() {
       // use null coalescing trick
       fontLigatures: fontLigaturesStrg ?? false,
     },
-  });
+  })
 
-  const codeTabs = useGetUserCodeFromLeetcodeTabs();
+  const codeTabs = useGetUserCodeFromLeetcodeTabs()
 
   // FIXME: See these two states, need to refractor everything connected to font variable
   // const fontStrg = useStorage<string>(localInjectedFontStorage.key);
@@ -67,17 +62,17 @@ export function Inject() {
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     // set the values from the form to the extension's local strg
-    localIsFontLigaturesEnabledStorage.setValue(data.fontLigatures);
-    localInjectedFontStorage.setValue(data.fontFamily);
+    localIsFontLigaturesEnabledStorage.setValue(data.fontLigatures)
+    localInjectedFontStorage.setValue(data.fontFamily)
 
     // inject the code
     // send the message to background, maybe this service-worker act as a event manager
     // hehe! This works
-    sendMessage("injectFontIfAny", { url: undefined }, "background");
+    sendMessage('injectFontIfAny', { url: undefined }, 'background')
 
     // give feedback to user
-    toast.success(`applied changes to the editor`);
-  };
+    toast.success(`applied changes to the editor`)
+  }
 
   // if (isError) {
   //   return (
@@ -119,16 +114,16 @@ export function Inject() {
       {/* this is controlled by "react-hook-form" library */}
       <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
         <Controller
-          name="fontFamily"
           control={control}
+          name="fontFamily"
           render={({ field }) => (
             <div className="flex items-center gap-3">
               <Label id="font-family">Please select any font</Label>
               <Select
                 name={field.name}
+                onValueChange={field.onChange}
                 // value = {null} overrides the placeholder text `Select a font family`
                 value={field.value ?? undefined}
-                onValueChange={field.onChange}
               >
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Choose one" />
@@ -140,15 +135,15 @@ export function Inject() {
         />
 
         <Controller
-          name="fontLigatures"
           control={control}
+          name="fontLigatures"
           render={({ field }) => (
             <div className="flex items-center gap-3">
               <Label htmlFor="font-ligatures">Font Ligatures</Label>
               <Switch
+                checked={field.value}
                 id="font-ligatures"
                 name={field.name}
-                checked={field.value}
                 onCheckedChange={field.onChange}
               />
             </div>
@@ -191,5 +186,5 @@ export function Inject() {
 
       {/* <footer className="ml-1 font-bold">Made by Shahil</footer> */}
     </div>
-  );
+  )
 }

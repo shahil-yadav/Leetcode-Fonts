@@ -1,4 +1,8 @@
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown } from 'lucide-react'
+import WebFont from 'webfontloader'
+
+import AppleLogo from '@/assets/apple.png'
+import { Button } from '@/components/ui/button'
 import {
   Command,
   CommandEmpty,
@@ -6,100 +10,97 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command";
+} from '@/components/ui/command'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import WebFont from "webfontloader";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import AppleLogo from "@/assets/apple.png";
+} from '@/components/ui/popover'
+import { cn } from '@/lib/utils'
 
 // TODO: Delete this after done with cleaning
 /** @deprecated using <Select /> instead of <Popover /> to comply with form */
 export function FontSelector({
-  setValue,
   setIsSuccess,
+  setValue,
   value,
 }: {
-  setValue: React.Dispatch<React.SetStateAction<string>>;
-  setIsSuccess: React.Dispatch<React.SetStateAction<boolean>>;
-  value: string;
+  setIsSuccess: React.Dispatch<React.SetStateAction<boolean>>
+  setValue: React.Dispatch<React.SetStateAction<string>>
+  value: string
 }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    WebFont.load({ google: { families: fonts } });
-  }, []);
+    WebFont.load({ google: { families: fonts } })
+  }, [])
 
   useEffect(() => {
     if (open) {
-      setIsSuccess(false);
+      setIsSuccess(false)
     }
-  }, [open]);
+  }, [open])
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover onOpenChange={setOpen} open={open}>
       <PopoverTrigger asChild>
         <Button
-          variant="outline"
-          role="combobox"
           aria-expanded={open}
           className="w-[250px] justify-between"
+          role="combobox"
+          variant="outline"
         >
-          {value ?? "Select any font..."}
+          {value ?? 'Select any font...'}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[250px] p-0">
         <Command>
-          <CommandInput placeholder="Search font..." className="h-9" />
+          <CommandInput className="h-9" placeholder="Search font..." />
           <CommandList>
             <CommandEmpty className="p-2">
               <p>Please choose from the default ones as now.</p>
             </CommandEmpty>
             <CommandGroup heading="Experimental">
-              {experiments.map((font) => (
+              {experiments.map(font => (
                 <CommandItem
                   key={font}
-                  value={font}
-                  style={{ fontFamily: font }}
                   onSelect={(currentValue) => {
-                    setValue(currentValue);
-                    setOpen(false);
+                    setValue(currentValue)
+                    setOpen(false)
                   }}
+                  style={{ fontFamily: font }}
+                  value={font}
                 >
                   <div className="flex items-center w-full justify-between">
                     <span>{font}</span>
-                    <img src={AppleLogo} className="size-3" />
+                    <img className="size-3" src={AppleLogo} />
                   </div>
                   <Check
                     className={cn(
-                      "ml-auto",
-                      value === font ? "opacity-100" : "opacity-0"
+                      'ml-auto',
+                      value === font ? 'opacity-100' : 'opacity-0',
                     )}
                   />
                 </CommandItem>
               ))}
             </CommandGroup>
             <CommandGroup heading="Universal">
-              {fonts.map((font) => (
+              {fonts.map(font => (
                 <CommandItem
                   key={font}
-                  value={font}
-                  style={{ fontFamily: font }}
                   onSelect={(currentValue) => {
-                    setValue(currentValue);
-                    setOpen(false);
+                    setValue(currentValue)
+                    setOpen(false)
                   }}
+                  style={{ fontFamily: font }}
+                  value={font}
                 >
                   {font}
                   <Check
                     className={cn(
-                      "ml-auto",
-                      value === font ? "opacity-100" : "opacity-0"
+                      'ml-auto',
+                      value === font ? 'opacity-100' : 'opacity-0',
                     )}
                   />
                 </CommandItem>
@@ -109,5 +110,5 @@ export function FontSelector({
         </Command>
       </PopoverContent>
     </Popover>
-  );
+  )
 }

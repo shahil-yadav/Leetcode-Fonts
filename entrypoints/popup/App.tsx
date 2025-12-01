@@ -1,20 +1,21 @@
-import { About } from "@/components/about";
-import { Inject } from "@/components/inject";
-import { Toaster } from "@/components/ui/sonner";
-import { Route, Routes } from "react-router";
+import { Route, Routes } from 'react-router'
+
+import { About } from '@/components/about'
+import { Inject } from '@/components/inject'
+import { Toaster } from '@/components/ui/sonner'
 
 function App() {
   return (
     <div className="bg-background w-120 p-4">
       <Routes>
-        <Route path="/" element={<Inject />} />
-        <Route path="about" element={<About />} />
+        <Route element={<Inject />} path="/" />
+        <Route element={<About />} path="about" />
       </Routes>
 
       {/* add shadcn sonner */}
-      <Toaster richColors closeButton />
+      <Toaster closeButton richColors />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
