@@ -8,12 +8,14 @@ import { FontLigaturesSwitch } from "./font-ligatures";
 
 export function Inject() {
   const code = useGetCodeFromEditor();
+  // FIXME: See these two states, need to refractor everything connected to font variable
+  // const fontStrg = useStorage<string>(localInjectedFontStorage.key);
   const [font, setFont] = useState(fonts[0]);
+  //
   const [isSuccess, setIsSuccess] = useState(false);
   const [isError, setIsError] = useState(false);
 
   /**  I think i am interfering with UX */
-
   // useEffect(() => {
   //   if (!isSuccess) return
 

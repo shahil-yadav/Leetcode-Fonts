@@ -1,3 +1,4 @@
+// TODO: Improve this hook
 export function useGetCodeFromEditor() {
   const [value, setValue] = useState(() => getCodeFromEditor());
 

@@ -37,3 +37,7 @@ export const fonts = [
   "Courier Prime", // Traditional choice, though slightly less popular in modern design
 ];
 ```
+
+## Tip for me while debugging popup in my extension
+
+use `location.reload(true)` to always hit my debugging endpoints

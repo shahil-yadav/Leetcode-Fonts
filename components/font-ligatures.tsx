@@ -1,8 +1,9 @@
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { useStorage } from "@/hooks/use-storage";
 
 export function FontLigaturesSwitch() {
-  const [val, setVal] = useState<boolean>(false);
+  const val = useStorage<boolean>(localIsFontLigaturesEnabledStorage.key);
 
   async function handleChange(checked: boolean) {
     const tabs = await getLeetcodeTabs();
@@ -19,26 +20,13 @@ export function FontLigaturesSwitch() {
     localIsFontLigaturesEnabledStorage.setValue(checked);
   }
 
-  useEffect(() => {
-    const unwatch = localIsFontLigaturesEnabledStorage.watch((newVal) => {
-      setVal(newVal);
-    });
-
-    async function main() {
-      setVal(await localIsFontLigaturesEnabledStorage.getValue());
-    }
-
-    main();
-
-    return () => {
-      // removing event listeners
-      unwatch();
-    };
-  }, []);
-
   return (
     <div className="flex items-center space-x-2">
-      <Switch checked={val} onCheckedChange={handleChange} id="ligatures" />
+      <Switch
+        checked={val ?? false}
+        onCheckedChange={handleChange}
+        id="ligatures"
+      />
       <Label htmlFor="ligatures">Font Ligatures</Label>
     </div>
   );
