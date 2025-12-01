@@ -2,6 +2,7 @@ import 'webext-bridge'
 
 declare module 'webext-bridge' {
   export interface ProtocolMap {
-    injectFontIfAny: {}
+    injectFontIfAny: unknown
+    reset: unknown
   }
 }

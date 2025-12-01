@@ -1,6 +1,8 @@
 import { SelectGroup } from '@radix-ui/react-select'
 
 import AppleLogo from '@/assets/apple.svg'
+import LinuxLogo from '@/assets/linux.svg'
+import WindowsLogo from '@/assets/windows.svg'
 import { SelectItem, SelectLabel } from '@/components/ui/select'
 
 export const fonts = [
@@ -26,12 +28,12 @@ export const fonts = [
 ]
 
 /** Apple Experimental Fonts */
-export const experiments = ['Monaco']
+export const experiments = ['Monaco', 'SF Mono']
 
 // helper fn
 export function renderFonts() {
   const renderItem = (font: string) => (
-    <SelectItem key={font} value={font}>
+    <SelectItem key={font} style={{ fontFamily: font }} value={font}>
       {font}
     </SelectItem>
   )
@@ -51,7 +53,14 @@ export function renderFonts() {
         {experimentalItems}
       </SelectGroup>
       <SelectGroup>
-        <SelectLabel>Default</SelectLabel>
+        <SelectLabel>
+          <div className="flex items-center gap-3">
+            Universal
+            <img className="size-3" src={WindowsLogo} />
+            <img className="size-3" src={AppleLogo} />
+            <img className="size-3" src={LinuxLogo} />
+          </div>
+        </SelectLabel>
         {items}
       </SelectGroup>
     </>

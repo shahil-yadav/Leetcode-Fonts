@@ -19,7 +19,7 @@ export function useStorage<T>(key: StorageItemKey) {
 
     // Implement cleanup function to delete the registered event listener use to watch for value changes in storage
     return () => unwatch()
-  }, [])
+  }, [key])
 
   return val
 }

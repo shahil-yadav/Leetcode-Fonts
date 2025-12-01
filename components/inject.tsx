@@ -4,6 +4,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { NavLink } from 'react-router'
 import { toast } from 'sonner'
 import { sendMessage } from 'webext-bridge/popup'
+import WebFont from 'webfontloader'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -22,13 +23,18 @@ interface IFormInput {
   fontLigatures: boolean
 }
 
+export function FontsLoader() {
+  useEffect(() => WebFont.load({ google: { families: fonts } }), [])
+  return <></>
+}
+
 export function Inject() {
   const fontFamilyStrg = useStorage<string>(localInjectedFontStorage.key)
   const fontLigaturesStrg = useStorage<boolean>(
     localIsFontLigaturesEnabledStorage.key,
   )
 
-  const { control, formState, handleSubmit } = useForm<IFormInput>({
+  const { control, handleSubmit } = useForm<IFormInput>({
     values: {
       fontFamily: fontFamilyStrg,
 
@@ -38,28 +44,6 @@ export function Inject() {
     },
   })
 
-  const codeTabs = useGetUserCodeFromLeetcodeTabs()
-
-  // FIXME: See these two states, need to refractor everything connected to font variable
-  // const fontStrg = useStorage<string>(localInjectedFontStorage.key);
-  // const [font, setFont] = useState(fonts[0]);
-  // //
-  // const [isSuccess, setIsSuccess] = useState(false);
-  // const [isError, setIsError] = useState(false);
-
-  /**  I think i am interfering with UX */
-  // useEffect(() => {
-  //   if (!isSuccess) return
-
-  //   const timer = setInterval(() => {
-  //     setIsSuccess(false)
-  //   }, 1000)
-
-  //   return () => {
-  //     clearInterval(timer)
-  //   }
-  // }, [isSuccess])
-
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     // set the values from the form to the extension's local strg
     localIsFontLigaturesEnabledStorage.setValue(data.fontLigatures)
@@ -68,44 +52,15 @@ export function Inject() {
     // inject the code
     // send the message to background, maybe this service-worker act as a event manager
     // hehe! This works
-    sendMessage('injectFontIfAny', { url: undefined }, 'background')
+    sendMessage('injectFontIfAny', { }, 'background')
 
     // give feedback to user
     toast.success(`applied changes to the editor`)
   }
 
-  // if (isError) {
-  //   return (
-  //     <div className="p-5 space-y-4">
-  //       <p className="text-right">
-  //         <code>{"<Error />"}</code>
-  //       </p>
-  //       <div className="flex gap-3 items-center">
-  //         <img className="size-10" src={LeetcodeLogo} />
-  //         <p>
-  //           LeetCode may have resolved the memory leak issue that this extension
-  //           relied on to function
-  //         </p>
-  //       </div>
-
-  //       <Button onClick={() => setIsError(false)}>Try again</Button>
-  //     </div>
-  //   );
-  // }
-
-  // useEffect(() => {
-  //   WebFont.load({ google: { families: fonts } });
-  // }, []);
-
   return (
-    <div className="space-y-2 h-80">
+    <div className="space-y-2 h-85">
       <div className="flex justify-end mb-2">
-        {/* <Link
-          label="Leetfonts"
-          url="https://chromewebstore.google.com/detail/leetcode-fonts/hinfimgacobnellbncbcpdlpaapcofaa"
-          className="text-lg font-semibold text-foreground no-underline hover:underline hover:text-foreground/70"
-        /> */}
-
         <NavLink className="hover:underline" to="/about">
           <code>/about</code>
         </NavLink>
@@ -125,7 +80,7 @@ export function Inject() {
                 // value = {null} overrides the placeholder text `Select a font family`
                 value={field.value ?? undefined}
               >
-                <SelectTrigger className="w-[180px]">
+                <SelectTrigger className="w-54">
                   <SelectValue placeholder="Choose one" />
                 </SelectTrigger>
                 <SelectContent>{renderFonts()}</SelectContent>
@@ -151,40 +106,9 @@ export function Inject() {
         />
 
         <Button type="submit">Submit</Button>
+        <Reset />
       </form>
 
-      {/* <FontSelector
-        setIsSuccess={setIsSuccess}
-        value={font}
-        setValue={setFont}
-      /> */}
-
-      {/* <FontLigaturesSwitch /> */}
-
-      {/* <Button disabled={isSuccess} onClick={handleInject} className="ml-2">
-        {isSuccess ? "Injected" : "Inject"}
-      </Button>
-      <Reset />
-      {isSuccess && (
-        <div className="text-green-800 mt-1">
-          <p className="font-bold">
-            Reload the leetcode if you don't see the changes rightaway
-          </p>
-          <p className="">Changes are applied to your editor successfully</p>
-        </div>
-      )}
-      <div className="my-2">
-        <SyntaxHighlighter
-          customStyle={{ height: 444 }}
-          codeTagProps={{ style: { fontFamily: font } }}
-          style={androidstudio}
-          language="cpp"
-        >
-          {code}
-        </SyntaxHighlighter>
-      </div> */}
-
-      {/* <footer className="ml-1 font-bold">Made by Shahil</footer> */}
     </div>
   )
 }

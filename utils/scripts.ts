@@ -1,10 +1,8 @@
-// @ts-nocheck
-
 /**
- *  __Cautious__ : include waitForElement.js code nested inside
+ *  _Cautious_ : include waitForElement.js code nested inside
  * this function shouldn't contain any dependency
  */
-export async function injectScript(fontFamily: string, fontLigatures: boolean) {
+export async function injectMyScript(fontFamily: string, fontLigatures: boolean) {
   // waitForElement.js
   /**
    * Installs a mutation observer over the DOM tree
@@ -36,6 +34,8 @@ export async function injectScript(fontFamily: string, fontLigatures: boolean) {
     throw new Error('Not able to find editor after 2.5sec')
   }
 
+  // eslint-disable-next-line ts/ban-ts-comment
+  // @ts-ignore
   window?.monaco?.editor
     ?.getEditors()[0]
     ?.updateOptions({ fontFamily, fontLigatures })
