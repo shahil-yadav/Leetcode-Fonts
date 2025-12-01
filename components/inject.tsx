@@ -59,56 +59,56 @@ export function Inject() {
   }
 
   return (
-    <div className="space-y-2 h-85">
-      <div className="flex justify-end mb-2">
-        <NavLink className="hover:underline" to="/about">
-          <code>/about</code>
-        </NavLink>
+    <div className="gap-2 flex flex-col justify-between h-85">
+      <div>
+        <div className="flex justify-end mb-2">
+          <NavLink className="hover:underline" to="/about">
+            <code>/about</code>
+          </NavLink>
+        </div>
+        {/* this is controlled by "react-hook-form" library */}
+        <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
+          <Controller
+            control={control}
+            name="fontFamily"
+            render={({ field }) => (
+              <div className="flex items-center gap-3">
+                <Label id="font-family">Please select any font</Label>
+                <Select
+                  name={field.name}
+                  onValueChange={field.onChange}
+                  // value = {null} overrides the placeholder text `Select a font family`
+                  value={field.value ?? undefined}
+                >
+                  <SelectTrigger className="w-54">
+                    <SelectValue placeholder="Choose one" />
+                  </SelectTrigger>
+                  <SelectContent>{renderFonts()}</SelectContent>
+                </Select>
+              </div>
+            )}
+          />
+          <Controller
+            control={control}
+            name="fontLigatures"
+            render={({ field }) => (
+              <div className="flex items-center gap-3">
+                <Label htmlFor="font-ligatures">Font Ligatures</Label>
+                <Switch
+                  checked={field.value}
+                  id="font-ligatures"
+                  name={field.name}
+                  onCheckedChange={field.onChange}
+                />
+              </div>
+            )}
+          />
+          <Button type="submit">Submit</Button>
+          <Reset />
+        </form>
       </div>
 
-      {/* this is controlled by "react-hook-form" library */}
-      <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          control={control}
-          name="fontFamily"
-          render={({ field }) => (
-            <div className="flex items-center gap-3">
-              <Label id="font-family">Please select any font</Label>
-              <Select
-                name={field.name}
-                onValueChange={field.onChange}
-                // value = {null} overrides the placeholder text `Select a font family`
-                value={field.value ?? undefined}
-              >
-                <SelectTrigger className="w-54">
-                  <SelectValue placeholder="Choose one" />
-                </SelectTrigger>
-                <SelectContent>{renderFonts()}</SelectContent>
-              </Select>
-            </div>
-          )}
-        />
-
-        <Controller
-          control={control}
-          name="fontLigatures"
-          render={({ field }) => (
-            <div className="flex items-center gap-3">
-              <Label htmlFor="font-ligatures">Font Ligatures</Label>
-              <Switch
-                checked={field.value}
-                id="font-ligatures"
-                name={field.name}
-                onCheckedChange={field.onChange}
-              />
-            </div>
-          )}
-        />
-
-        <Button type="submit">Submit</Button>
-        <Reset />
-      </form>
-
+      <footer>Made by Shahil</footer>
     </div>
   )
 }
