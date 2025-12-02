@@ -46,8 +46,9 @@ export function renderFonts() {
       <SelectGroup>
         <SelectLabel className="text-stone-400">
           <div className="flex gap-1 items-center">
-            <span>Apple</span>
+            <span>Supports Apple </span>
             <img className="size-3" src={AppleLogo} />
+            <span>only</span>
           </div>
         </SelectLabel>
         {experimentalItems}
