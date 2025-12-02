@@ -8,6 +8,7 @@ import { SelectItem, SelectLabel } from '@/components/ui/select'
 export const fonts = [
   'Fira Code', // Very popular in coding communities for its ligatures
   'JetBrains Mono', // Popular among developers, especially in IDEs like JetBrains
+  'Geist Mono', // https://vercel.com/font
   'Source Code Pro', // Widely used in development, particularly by Adobe
   'Roboto Mono', // Popular on the web, part of the Google Fonts collection
   'Inconsolata', // A favorite for many coders, particularly in open-source projects
