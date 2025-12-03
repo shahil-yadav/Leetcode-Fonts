@@ -103,7 +103,7 @@ export function Inject() {
               </div>
             )}
           />
-          <Button type="submit">Submit</Button>
+          <Button type="submit">Inject</Button>
           <Reset />
         </form>
       </div>
