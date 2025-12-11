@@ -8,9 +8,9 @@
 </p>
 
 ## Showcase
+<img width="1280" height="800" alt="showcase-1" src="https://github.com/user-attachments/assets/05bb566f-6faa-48d4-9297-1b196ca6ec5c" />
+<img width="1280" height="800" alt="showcase-2" src="https://github.com/user-attachments/assets/9e3219a6-c254-489b-b616-5c0845e0175b" />
 
-<img alt="cn" src="https://github.com/user-attachments/assets/110438cf-4564-404b-a512-5fc6c1c8d44a" />
-<img alt="com" src="https://github.com/user-attachments/assets/e1ea2063-8e8f-4544-8efb-7e04d46fb370" />
 
 List of available fonts in the plugin that are loaded through the [Google Font API](https://developers.google.com/fonts/docs/getting_started?csw=1)
 
