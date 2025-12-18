@@ -34,7 +34,7 @@ export function Inject() {
     localIsFontLigaturesEnabledStorage.key,
   )
 
-  const { control, handleSubmit } = useForm<IFormInput>({
+  const { control, formState: { isDirty }, handleSubmit } = useForm<IFormInput>({
     values: {
       fontFamily: fontFamilyStrg,
 
@@ -66,6 +66,7 @@ export function Inject() {
             <code>/about</code>
           </NavLink>
         </div>
+
         {/* this is controlled by "react-hook-form" library */}
         <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
           <Controller
@@ -105,6 +106,7 @@ export function Inject() {
           />
           <Button type="submit">Inject</Button>
           <Reset />
+          {isDirty && <p className="text-xs text-destructive mb-1">You have unsaved changes</p>}
         </form>
       </div>
 
