@@ -1,3 +1,5 @@
+# Proudly open sourced
+
 ## Supports [leetcode.cn](https://leetcode.cn) and [leetcode.com](https://leetcode.com)
 
 <p align="center">
