@@ -13,9 +13,6 @@
 <img width="1280" height="800" alt="showcase-1" src="https://github.com/user-attachments/assets/05bb566f-6faa-48d4-9297-1b196ca6ec5c" />
 <img width="1280" height="800" alt="showcase-2" src="https://github.com/user-attachments/assets/9e3219a6-c254-489b-b616-5c0845e0175b" />
 
-
-List of available fonts in the plugin that are loaded through the [Google Font API](https://developers.google.com/fonts/docs/getting_started?csw=1)
-
 ## Featured on wxt.dev
 <img width="1512" height="982" alt="image" src="https://github.com/user-attachments/assets/4279abce-8b62-409d-98d4-8c79d1688e21" />
 
